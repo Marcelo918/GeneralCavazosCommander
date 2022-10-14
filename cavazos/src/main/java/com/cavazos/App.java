@@ -47,11 +47,11 @@ public class App
 
             if (userAnswer.length() != 1) {
 
-                System.out.println("Invalid input. Please enter a valid command!");
+                System.out.println("ERROR: Unknown command!");
 
             } else if (answerCheck == answerQ) {
 
-                System.out.println("Goodbye! See you soon!");
+                System.out.println("Thank you General Cavazos!");
                 break;
 
             } else if (answerCheck == answerL) {
@@ -59,9 +59,14 @@ public class App
                 System.out.println("------List of all commands------");
                 print(commandArray);
 
+            } else if (answerCheck == answerI) {
+
+                System.out.print("[COMMAND ISSUED]: General Cavazos orders the troops to: ");
+                randomCommand(commandArray, 1);
+
             } else {
 
-                System.out.println("Invalid input. Please enter a valid command!");
+                System.out.println("ERROR: Uknown command!");
             }
 
             //user1.close();
@@ -70,10 +75,18 @@ public class App
 
     }
 
+    public static void randomCommand(String[] commandArray, int numCommand) {
+        Random rand = new Random();
+        for (int i = 0; i < numCommand; i++) {
+            int randIndex = rand.nextInt(commandArray.length);
+            System.out.println(commandArray[randIndex]);
+        }
+    }
+
     public static void print(String[] commandArray) {
         System.out.printf("Number\tCommand\n");
         System.out.printf("------\t------------\n");
-        for (int i = 1; i < commandArray.length; i++) {
+        for (int i = 0; i < commandArray.length; i++) {
             System.out.printf("%02d\t%s\n", i, commandArray[i]);
         }
     }
