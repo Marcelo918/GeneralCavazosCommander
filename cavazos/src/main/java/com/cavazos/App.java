@@ -17,6 +17,10 @@ import java.util.Scanner;
 
 public class App 
 {
+    static Stack<String> newStack = new Stack<String>();
+    static int newNum;
+    static int counter = 0;
+
     public static void main( String[] args )
     {
         // path to the JSon File
@@ -92,6 +96,7 @@ public class App
             } else if (answerCheck == answerU) {
 
                 stack_pop();
+                System.out.println("empty");
 
             } else {
 
@@ -118,16 +123,14 @@ public class App
         //Stack<String> newStack = new Stack<String>();
         newStack.push(commandArray[newNum]);
         System.out.println("[REDO COMMAND ISSUED]: General Cavazos orders the troops to redo: " + newStack.peek());
+        counter++;
 
     }
-
-    static Stack<String> newStack = new Stack<String>();
-    static int newNum;
-    static int counter = 0;
 
     public static void stack_push(String[] commandArray, Stack<String> stack) {
 
         newStack.push(commandArray[newNum]);
+        //counter++;
     }
 
     // undo the last command issued
@@ -160,6 +163,7 @@ public class App
             //stack.push(commandArray[randIndex]);
             //printStack(stack);
         }
+
     }
 
     // prints command array
