@@ -8,7 +8,7 @@ import java.util.Scanner;
 
 /**
  * Author: Marcelo Villalobos Diaz
- * Date: October 14, 2022
+ * Date: October 23, 2022
  * Class: CSIS26 -FA22
  * Description: The Cavazos Commander App should perform the
  * commands listed in the menu.
@@ -17,9 +17,8 @@ import java.util.Scanner;
 
 public class App 
 {
-    static Stack<String> newStack = new Stack<String>();
+    static Stack<String> commandStack = new Stack<String>();
     static int newNum;
-    static int counter = 0;
 
     public static void main( String[] args )
     {
@@ -30,20 +29,6 @@ public class App
         JSONArray commandJSONArray = JSONFile.readArray(fileName);
         String[] commandArray = getCommandArray(commandJSONArray);
         System.out.println(commandArray);
-
-        // the following are the only characters allowed to be input
-        // issue a random command from the 26 possible
-        char answerI = 'i';
-        // lists all of the commands
-        char answerL = 'l';
-        // undo the last command that was issued
-        char answerU = 'u';
-        // redo the last command that was issued
-        char answerR = 'r';
-        // quits the application
-        char answerQ = 'q';
-
-        //Stack<String> newStack = new Stack<>();
 
         // conditional statement for the while loop
         boolean isRunning = true;
@@ -66,81 +51,60 @@ public class App
             Scanner user1 = new Scanner(System.in);
             String userAnswer = user1.next();
             char answerCheck = userAnswer.charAt(0);
+            
             // checks if the input is only one character
             if (userAnswer.length() != 1) {
 
                 System.out.println("ERROR: Unknown command!");
 
-            } else if (answerCheck == answerQ) {
+            } else if (answerCheck == 'q') {
 
                 System.out.println("Thank you General Cavazos!");
                 break;
 
-            } else if (answerCheck == answerL) {
+            } else if (answerCheck == 'l') {
 
                 System.out.println("------List of all commands------");
                 print(commandArray);
-                //newStack.push(answerCheck);
 
-            } else if (answerCheck == answerI) {
+            } else if (answerCheck == 'i') {
 
                 System.out.print("[COMMAND ISSUED]: General Cavazos orders the troops to: ");
                 randomCommand(commandArray, 1);
-                //newStack.push(commandArray);
 
-            } else if (answerCheck == answerR) {
+            } else if (answerCheck == 'r') {
 
-                myStack(commandArray, newNum);
+                commandRedo(commandArray, newNum);
 
 
-            } else if (answerCheck == answerU) {
+            } else if (answerCheck == 'u') {
 
-                stack_pop();
-                System.out.println("empty");
+                commandUndo();
 
             } else {
 
                 System.out.println("ERROR: Uknown command!");
             }
 
-            //user1.close();
-
         }
 
     }
 
-    public static void printStack(Stack<String> s) {
+    // redo the previous command issued
+    public static void commandRedo(String[] commandArray, int newNum) {
 
-        if(s.isEmpty()) {
-            System.out.println("You have nothing in your stack");
-        } else {
-            System.out.println(s.peek());
-            //System.out.println("This is your stack " + s);
-        }
-    }
+        commandStack.push(commandArray[newNum]);
+        System.out.println("[REDO COMMAND ISSUED]: General Cavazos orders the troops to redo: " + commandStack.peek());
 
-    public static void myStack(String[] commandArray, int newNum) {
-        //Stack<String> newStack = new Stack<String>();
-        newStack.push(commandArray[newNum]);
-        System.out.println("[REDO COMMAND ISSUED]: General Cavazos orders the troops to redo: " + newStack.peek());
-        counter++;
-
-    }
-
-    public static void stack_push(String[] commandArray, Stack<String> stack) {
-
-        newStack.push(commandArray[newNum]);
-        //counter++;
     }
 
     // undo the last command issued
-    public static void stack_pop() {
+    public static void commandUndo() {
 
-        if (counter > 0) {
+        if (commandStack.size() > 0) {
 
-            System.out.println("[UNDO COMMAND ISSUED]: General Cavazos orders the troops to undo: " + newStack.peek());
-            counter--;
-            newStack.pop();
+            System.out.println("[UNDO COMMAND ISSUED]: General Cavazos orders the troops to undo: " + commandStack.peek());
+            commandStack.pop();
 
         } else {
 
@@ -152,16 +116,11 @@ public class App
     // randomly issue commands from General Cavazos
     public static void randomCommand(String[] commandArray, int numCommand) {
         Random rand = new Random();
-        //int newNum = 0;
-        //Stack<String> stack = new Stack<String>();
         for (int i = 0; i < numCommand; i++) {
             int randIndex = rand.nextInt(commandArray.length);
             System.out.println(commandArray[randIndex]);
             newNum = randIndex;
-            newStack.push(commandArray[randIndex]);
-            counter++;
-            //stack.push(commandArray[randIndex]);
-            //printStack(stack);
+            commandStack.push(commandArray[randIndex]);
         }
 
     }
